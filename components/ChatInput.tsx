@@ -1,10 +1,12 @@
 'use client';
 import { db } from '@/firebase';
-import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
+import { ArrowRightCircleIcon } from '@heroicons/react/24/solid';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import { FormEvent, useState } from 'react';
-import toast from 'react-hot-toast';
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
+
 
 type Props = {
   chatId: string;
@@ -15,6 +17,7 @@ function ChatInput({ chatId }: Props) {
   const { data: session } = useSession();
 
   const model = 'gpt-3.5-turbo';
+  const {toast} = useToast();
 
   const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,7 +38,9 @@ function ChatInput({ chatId }: Props) {
       },
     };
 
-    const notification = toast.loading('ChatGPT is thinking...');
+    const notification = toast({
+      title: 'ChatGPT is thinking...',
+    })
 
     await addDoc(
       collection(
@@ -51,10 +56,6 @@ function ChatInput({ chatId }: Props) {
 
     });
 
-    //Toast
-
-
-
     await fetch('/api/askQuestion', {
       method: 'POST',
       headers: {
@@ -68,7 +69,9 @@ function ChatInput({ chatId }: Props) {
       }),
 
     }).then(() => {
-      toast.success('ChatGPT has responded!', { id: notification });
+      toast({
+        title: 'ChatGPT has responded!',
+      });
     })
   };
 
@@ -83,15 +86,15 @@ function ChatInput({ chatId }: Props) {
           placeholder="Type your message here..."
           onChange={(e) => setPrompt(e.target.value)}
         />
-        <button
+        <Button
           disabled={!prompt || !session}
           type="submit"
-          className="bg-[#11A37F] hover:opacity-50 text-white font-bold px-4 py-2 rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
+          size="icon"
+          className="bg-[#11A37F] hover:opacity-50 text-white font-bold rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
-          <PaperAirplaneIcon className="h-4 w-4 -rotate-45" />
-        </button>
+          <ArrowRightCircleIcon className="h-4 w-4" />
+        </Button>
       </form>
-      <div>{/* Model selection*/}</div>
     </div>
   );
 }

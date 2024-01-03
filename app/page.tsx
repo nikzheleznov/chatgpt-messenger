@@ -11,8 +11,8 @@ function HomePage() {
           </div>
           <div className="space-y-2">
             <p className="infoText">Lorem ipsum dolor sit amet.</p>
-            <p className="infoText"></p>
-            <p className="infoText"></p>
+            <p className="infoText">Lorem ipsum dolor sit amet.</p>
+            <p className="infoText">Lorem ipsum dolor sit amet.</p>
           </div>
         </div>
       </div>

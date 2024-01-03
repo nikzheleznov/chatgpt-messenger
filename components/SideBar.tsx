@@ -5,6 +5,12 @@ import { collection, orderBy, query } from 'firebase/firestore';
 import { useSession, signOut } from 'next-auth/react';
 import { db } from '@/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 function SideBar() {
   const { data: session } = useSession();
@@ -31,12 +37,21 @@ function SideBar() {
         {/* Chat list */}
       </div>
       {session && (
-        <img
-          onClick={() => signOut()}
-          src={session.user?.image ?? ''}
-          alt="user"
-          className="rounded-full h-10 w-10 m-2 cursor-pointer hover:opacity-50"
-        />
+        <TooltipProvider delayDuration={200}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <img
+                onClick={() => signOut()}
+                src={session.user?.image ?? ''}
+                alt="user"
+                className="rounded-full h-10 w-10 m-2 cursor-pointer hover:opacity-50"
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Log out</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       )}
     </div>
   );

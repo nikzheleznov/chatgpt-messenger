@@ -1,10 +1,10 @@
 'use client';
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "@/components/ui/toaster"
 
 export default function ClientProvider() {
   return (
     <>
-      <Toaster position="top-right" />
+      <Toaster />
     </>
   );
 }
